@@ -1,0 +1,50 @@
+body {
+    padding: 10px;
+}
+
+label {display:block;}
+
+textarea { display:block;}
+
+.save_button  { 
+    display:block;
+    margin-top: 5px;
+}
+
+
+.listing_container {
+    display: flex;
+}
+
+.item_img {
+    width: 40%;
+    max-height: 75vh;
+    margin-right: 20px;
+}
+
+.little_flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.little_container {
+    width:24%;
+    margin:10px;
+    border: 1px solid black ;
+}
+
+.little_img {
+    width:100%;
+}
+
+.comments_container {
+    display: flex;
+}
+
+.comments_fild{
+    margin: 0 20px;
+}
+
+.comment_little_container {
+    margin: 0 10px;
+}

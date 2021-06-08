@@ -1,0 +1,79 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+<div class="listing_container">
+
+    <img class="item_img" src="{{page.img_url}}" alt="item img">
+
+    <div class="item_content">
+        {% if text is not None%}
+        <div class="alert alert-warning" role="alert">
+                {{text}}
+        </div>
+        {% endif%}
+        <h1 class="item_title">{{page.title}}</h1>
+
+        <form action="{% url 'listing_page' page.item_id %}" method="post">
+            {% csrf_token %}
+            {{whatch_form}}
+            {% if added is False %}
+            <input type="submit" value="Add To Watch List">
+            {% else %}
+            <input type="submit" value="Delete From Watch List">
+            {% endif %}
+        </form>
+
+        <hr>
+        <h6 class="item_category">category: {{ page.category }}</h6>
+        <hr>
+        <p>Current Price(BID): ${{ bid.0.bid__max }}</p>
+        <span>starting bid: ${{ page.start_bid }}</span>
+        <!-- if itam is active -->
+        {% if page.active == True %}
+        <!-- check if it is users item -->
+            {% if page_is_users == False %}
+            <form action="{% url 'listing_page' page.item_id %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input class='btn_bid' type="submit" value="BID">
+            </form>
+            <!-- if not render bid sistem -->
+            {% else %}
+            <form action="{% url 'turn_off' page.item_id %}" method="post">
+                {% csrf_token %}
+                <button class='btn_bid' type="submit">{{ turn_off }}Stop the Auction</button>
+            </form>
+            {% endif %}
+        {% else %}
+            <h1 style="color: red;">CLOSED</h1>
+               <!-- check Winner -->
+            {% if bid.0.user_id == current_user %}
+                <h3 style="color: green;">Well done! You won this auction!</h3>
+            {% endif %}
+        {% endif %}
+        <hr>
+        <p class="item_description">{{ page.description }}</p>
+    </div>
+</div>
+<hr>
+<div class="comments_container">
+    <form action="{% url 'listing_page' page.item_id %}" method="post">
+    {% csrf_token %}
+    {{ comments_form }}
+    <button class='btn_comment' type="submit">Comment</button>
+    </form>
+    <div class="comments_fild">
+        <h2>Comments:</h2>
+        <hr>
+    <div class="comments">
+        {% for comment in comments%}
+        <div class="comment_little_container">
+            {{comment}}
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+    </div>  
+</div>
+{% endblock %}

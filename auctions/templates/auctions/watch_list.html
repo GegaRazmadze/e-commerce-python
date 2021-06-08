@@ -1,0 +1,47 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<div class="little_flex">
+    {% for item in watch_li %}
+        <div class="little_container">
+            <a href="{% url 'listing_page' item.item_id.item_id %}">
+            <img class="little_img"  src="{{ item.item_id.img_url }}" alt="little img">
+            <div class="little_content">
+                <h3>{{item.item_id.title}}</h3>
+                <hr>
+                <h6>Category: {{item.item_id.category}}</h6>
+                <hr>
+                <h6>Corrent BID: $
+                     <!-- set Current Value -->
+                {% for bid__max in bids %}
+                    {% if bid__max.item_id == item.item_id.item_id %}
+                        {{ bid__max.bid__max }}
+                    {% endif %}
+                {% endfor %}
+                </h6>
+                <span>Start bid: ${{item.item_id.start_bid}}</span>
+                <!-- Check it item is active -->
+                {% if item.item_id.active == False %}
+                <h3 style="color: red;">CLOSED</h3>
+                        <!-- check Winner -->
+                    {% for bid__max in bids %}
+                        {% if bid__max.item_id == item.item_id.item_id %}
+                            <!-- check Winner -->
+                            {% if bid__max.user_id == current_user %}
+                                <h3 style="color: green;">Well done! You won this auction!</h3>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+            </div>  
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+
+
+
